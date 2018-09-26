@@ -88,6 +88,7 @@ func (i inFlightAttaching) Add(nodeID, volumeID, name string) {
 }
 
 func (i inFlightAttaching) Del(nodeID, name string) {
+	// TODO: check for existence
 	delete(i[nodeID], name)
 }
 

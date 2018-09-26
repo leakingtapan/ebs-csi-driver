@@ -85,6 +85,7 @@ func (d *Driver) NodeStageVolume(ctx context.Context, req *csi.NodeStageVolumeRe
 		return nil, status.Error(codes.Internal, msg)
 	}
 	defer func() {
+		// TODO: fix error message when stage failed.
 		klog.Infof("NodeStageVolume: volume=%q operation finished", req.GetVolumeId())
 		d.inFlight.Delete(req)
 	}()
@@ -281,6 +282,7 @@ func (d *Driver) NodeGetInfo(ctx context.Context, req *csi.NodeGetInfoRequest) (
 	}
 
 	return &csi.NodeGetInfoResponse{
+		//TODO: add MaxVolumesPerNode
 		NodeId:             m.GetInstanceID(),
 		AccessibleTopology: topology,
 	}, nil

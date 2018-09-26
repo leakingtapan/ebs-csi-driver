@@ -17,6 +17,7 @@ limitations under the License.
 package devicemanager
 
 import (
+	"fmt"
 	"testing"
 )
 
@@ -81,5 +82,15 @@ func TestNameAllocatorError(t *testing.T) {
 	device, err := allocator.GetNext(existingNames)
 	if err == nil {
 		t.Errorf("expected error, got device  %q", device)
+	}
+}
+
+func Test1(t *testing.T) {
+	allocator := NewNameAllocator().(*nameAllocator)
+	en := make(ExistingNames)
+	for i := 0; i < 100; i++ {
+		got, _ := allocator.GetNext(en)
+		allocator.Deprioritize(got)
+		fmt.Println(got, allocator.counter)
 	}
 }

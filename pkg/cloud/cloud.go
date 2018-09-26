@@ -173,6 +173,7 @@ func NewCloud() (Cloud, error) {
 	svc := newEC2MetadataSvc()
 
 	var err error
+	// TODO: move inside GetMetadata using cache optionally
 	metadata, err := NewMetadataService(svc)
 	if err != nil {
 		return nil, fmt.Errorf("could not get metadata from AWS: %v", err)
@@ -197,6 +198,7 @@ func newEC2Cloud(metadata MetadataService, svc *ec2metadata.EC2Metadata) (Cloud,
 		&credentials.SharedCredentialsProvider{},
 	}
 
+	// TODO: create volume across region
 	awsConfig := &aws.Config{
 		Region:                        aws.String(metadata.GetRegion()),
 		Credentials:                   credentials.NewChainCredentials(provider),
@@ -352,6 +354,8 @@ func (c *cloud) AttachDisk(ctx context.Context, volumeID, nodeID string) (string
 }
 
 func (c *cloud) DetachDisk(ctx context.Context, volumeID, nodeID string) error {
+	// TODO: validation of node exists
+	// TODO: validation of volume exists
 	instance, err := c.getInstance(ctx, nodeID)
 	if err != nil {
 		return err
@@ -598,6 +602,7 @@ func (c *cloud) getInstance(ctx context.Context, nodeID string) (*ec2.Instance, 
 	}
 
 	var nextToken *string
+	//TODO: since we are expecting only 1 result, is for loop needed?
 	for {
 		response, err := c.ec2.DescribeInstancesWithContext(ctx, request)
 		if err != nil {

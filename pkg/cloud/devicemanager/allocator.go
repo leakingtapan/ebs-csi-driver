@@ -78,6 +78,7 @@ func NewNameAllocator() NameAllocator {
 			possibleNames[name] = 0
 		}
 	}
+	fmt.Printf("%v\n", possibleNames)
 	return &nameAllocator{
 		possibleNames: possibleNames,
 		counter:       0,
