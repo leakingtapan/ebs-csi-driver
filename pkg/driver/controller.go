@@ -155,6 +155,15 @@ func (d *controllerService) CreateVolume(ctx context.Context, req *csi.CreateVol
 		volumeTags[k] = v
 	}
 
+	// pick from zone
+	if zone == "" {
+		zone = volumeParams["zone"]
+	}
+	// pick from zones
+	if zone == "" {
+		zones := volumeParams["zones"]
+		zone = strings.Split(zones, ",")[0]
+	}
 	opts := &cloud.DiskOptions{
 		CapacityBytes:    volSizeBytes,
 		Tags:             volumeTags,
